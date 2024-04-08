@@ -23,8 +23,7 @@ fn main() {
             .read_line(&mut call_of_dread)
             .expect("Failed to read input");
         if call_of_dread.trim() == "y" {
-            let index = get_first_word(&call_of_dead);
-            let first_word = &call_of_dead.trim()[0..=index];
+            let first_word = get_first_word(&call_of_dead);
             println!("The first word is {}", first_word);
         }
         println!("Continue? (n = no)");
@@ -43,12 +42,12 @@ fn get_string_data(text: &String) -> usize{
     text.len()
 }
 
-fn get_first_word(text: &String) -> usize{
+fn get_first_word(text: &String) -> &str{
     let text_bytes = text.as_bytes();
     for(i, &item) in text_bytes.iter().enumerate() {
         if item == b' ' {
-            return i;
+            return &text[0..i];
         }
     }
-    text.len()
+    &text[..]
 }
