@@ -1,9 +1,11 @@
 use std::io;
 
 fn main() {
+    let mut call_of_dead = String::new();
+    let mut call_of_dread = String::new();
     loop{
         println!{"Type some words here!"}
-        let mut call_of_dead = String::new();
+        call_of_dead.clear();
         io::stdin()
             .read_line(&mut call_of_dead)
             .expect("Failed to read input");
@@ -13,15 +15,24 @@ fn main() {
             break;
         }
         let num: usize = get_string_data(&cow);
-        println!("The text: {} has {} characters.", call_of_dead, num);
+        println!("The text: {} has {} characters.", call_of_dead.trim(), num);
         println!("The text: {} is valid", cow);
-        let mut call_of_dread = String::new();
-        println!("Continue? (n = no)");
+        println!("Check first word length? (y = yes)");
+        call_of_dread.clear();
         io::stdin()
             .read_line(&mut call_of_dread)
             .expect("Failed to read input");
-        let call_of_dread = String::from(call_of_dread.trim());
-        if call_of_dread == "n"{
+        if call_of_dread.trim() == "y" {
+            let index = get_first_word(&call_of_dead);
+            let first_word = &call_of_dead.trim()[0..=index];
+            println!("The first word is {}", first_word);
+        }
+        println!("Continue? (n = no)");
+        call_of_dread.clear();
+        io::stdin()
+            .read_line(&mut call_of_dread)
+            .expect("Failed to read input");
+        if call_of_dread.trim() == "n"{
             break;
         }
     }
@@ -29,5 +40,15 @@ fn main() {
 }
 
 fn get_string_data(text: &String) -> usize{
+    text.len()
+}
+
+fn get_first_word(text: &String) -> usize{
+    let text_bytes = text.as_bytes();
+    for(i, &item) in text_bytes.iter().enumerate() {
+        if item == b' ' {
+            return i;
+        }
+    }
     text.len()
 }
